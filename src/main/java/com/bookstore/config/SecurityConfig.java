@@ -1,7 +1,6 @@
 package com.bookstore.config;
 
 import com.bookstore.service.UserSecurityService;
-import org.apache.catalina.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return SecurityUtility.passwordEncoder();
     }
 
-    private static final String[] PUBLIC_MATCHES = {
+    private static final String[] PUBLIC_MATCHERS = {
             "/css/**",
             "/js/**",
             "/image/**",
@@ -37,8 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().disable().httpBasic().and().authorizeRequests().antMatchers(PUBLIC_MATCHES)
-                .permitAll().anyRequest().authenticated();
+        http.csrf().disable().cors().disable().httpBasic().and().authorizeRequests()
+                .antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
     }
 
     @Autowired
