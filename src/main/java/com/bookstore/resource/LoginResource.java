@@ -34,13 +34,13 @@ public class LoginResource {
     }
 
     @RequestMapping("/checkSession")
-    public ResponseEntity checkSession() {
-        return new ResponseEntity("Session Active!", HttpStatus.OK);
+    public ResponseEntity<String> checkSession() {
+        return new ResponseEntity<>("Session Active!", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/logout", method= RequestMethod.POST)
-    public ResponseEntity logout() {
+    @RequestMapping(value = "/user/logout", method= RequestMethod.POST)
+    public ResponseEntity<String> logout() {
         SecurityContextHolder.clearContext();
-        return new ResponseEntity("Logout Succesfully!", HttpStatus.OK);
+        return new ResponseEntity<>("Logout Succesfully!", HttpStatus.OK);
     }
 }
