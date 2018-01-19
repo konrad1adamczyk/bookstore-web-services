@@ -55,4 +55,10 @@ public class BookResource {
     public List<Book> getBookList() {
         return bookService.findAll();
     }
+
+    @RequestMapping("/{id}")
+    public Book getBook(@PathVariable("id") Long id){
+        return bookService.findOne(id);
+    }
+
 }
