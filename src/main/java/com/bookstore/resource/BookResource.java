@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,8 +41,13 @@ public class BookResource {
             MultipartFile multipartFile = multipartRequest.getFile(it.next());
             String fileName = id + ".png";
 
-            byte[] bytes = multipartFile.getBytes();
+            try {
+                Files.delete(Paths.get("src/main/resources/static/image/book/" + fileName));
+            } catch (Exception e) {
+                System.out.println("There is no file ");
+            }
 
+            byte[] bytes = multipartFile.getBytes();
             BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File("src/main/resources/static/image/book/" + fileName)));
             stream.write(bytes);
             stream.close();
@@ -57,8 +65,14 @@ public class BookResource {
     }
 
     @RequestMapping("/{id}")
-    public Book getBook(@PathVariable("id") Long id){
+    public Book getBook(@PathVariable("id") Long id) {
         return bookService.findOne(id);
     }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public Book updateBookPost(@RequestBody Book book) {
+        return bookService.save(book);
+    }
+
 
 }
