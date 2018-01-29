@@ -159,10 +159,10 @@ public class UserResource {
 
     @RequestMapping("/getCurrentUser")
     public User getCurrentUser(Principal principal) {
-        String username = principal.getName();
         User user = new User();
-        if (null != username) {
-            user = userService.findByUsername(username);
+        if (null != principal) {
+           user = userService.findByUsername(principal.getName());
+
         }
 
         return user;
