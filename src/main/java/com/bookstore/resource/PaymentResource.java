@@ -42,7 +42,7 @@ public class PaymentResource {
     public ResponseEntity removePaymentPost(@RequestBody String id, Principal principal) {
 //		User user = userService.findByUsername(principal.getName());
 
-        userPaymentService.removeById(Long.parseLong(id));
+        userPaymentService.removeById(Long.valueOf(id));
 
         return new ResponseEntity("Payment Removed Successfully!", HttpStatus.OK);
     }
