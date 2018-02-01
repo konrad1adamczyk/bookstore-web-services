@@ -3,11 +3,9 @@ package com.bookstore.service.impl;
 import com.bookstore.domain.User;
 import com.bookstore.domain.UserBilling;
 import com.bookstore.domain.UserPayment;
+import com.bookstore.domain.UserShipping;
 import com.bookstore.domain.security.UserRole;
-import com.bookstore.repository.RoleRepository;
-import com.bookstore.repository.UserBillingRepository;
-import com.bookstore.repository.UserPaymentRepository;
-import com.bookstore.repository.UserRepository;
+import com.bookstore.repository.*;
 import com.bookstore.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserBillingRepository userBillingRepository;
+
+    @Autowired
+    private UserShippingRepository userShippingRepository;
 
     @Transactional
     public User createUser(User user, Set<UserRole> userRoles) {
@@ -103,6 +104,29 @@ public class UserServiceImpl implements UserService {
             } else {
                 userPayment.setDefaultPayment(false);
                 userPaymentRepository.save(userPayment);
+            }
+        }
+    }
+
+    @Override
+    public void updateUserShipping(UserShipping userShipping, User user) {
+        userShipping.setUser(user);
+        userShipping.setUserShippingDefault(true);
+        user.getUserShippingList().add(userShipping);
+        save(user);
+    }
+
+    @Override
+    public void setUserDefaultShipping(Long userShippingId, User user) {
+        List<UserShipping> userShippingList = (List<UserShipping>) userShippingRepository.findAll();
+
+        for (UserShipping userShipping : userShippingList) {
+            if(userShipping.getId() == userShippingId) {
+                userShipping.setUserShippingDefault(true);
+                userShippingRepository.save(userShipping);
+            } else {
+                userShipping.setUserShippingDefault(false);
+                userShippingRepository.save(userShipping);
             }
         }
     }

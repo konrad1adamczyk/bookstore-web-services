@@ -49,6 +49,9 @@ public class User implements UserDetails, Serializable {
         return authorities;
     }
 
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "user")
+    private List<UserShipping> userShippingList;
+
     @Override
     public boolean isAccountNonExpired() {
         // TODO Auto-generated method stub
